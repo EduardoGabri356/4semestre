@@ -1,0 +1,6 @@
+instalar -> express, mongoose, -> npm install .........
+cors dotenv
+
+instalar para desenvolvimento: nodemon -> npm install --save-dev ....... 
+
+ou -> npm install -D 
