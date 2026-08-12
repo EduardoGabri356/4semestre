@@ -4,3 +4,6 @@ cors dotenv
 instalar para desenvolvimento: nodemon -> npm install --save-dev ....... 
 
 ou -> npm install -D 
+
+
+rodar projeto: npm run swagger

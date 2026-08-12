@@ -21,5 +21,5 @@ const tarefaSchema = new Schema({
         })
     },{timestamp: true}
 );
-const tarefa = mongoose.model('Task', tarefaSchema);
-export default tarefa
+const Tarefa = mongoose.model('Task', tarefaSchema);
+export default Tarefa
