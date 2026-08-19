@@ -7,7 +7,7 @@ const app = new express();
 app.use(express.json());
 app.use(cors({
     Credential: true,
-    origin: "http://localhost:3000"
+    origin: "http://localhost:5173"
 }))
 // ligar express com as rotas
 app.use("/docs", swaggerUI.serve, saggerUI.setup(swaggerDocument));
