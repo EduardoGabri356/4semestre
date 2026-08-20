@@ -1,9 +1,104 @@
-instalar -> express, mongoose, -> npm install .........
-cors dotenv
+comando para iniciar projeto: npm init -y
 
-instalar para desenvolvimento: nodemon -> npm install --save-dev ....... 
+No package.json, no "type", trocar o "common" por "module"(Se não tiver type, pode adicionar)
 
-ou -> npm install -D 
+Instalar: express, mongoose, cors, dotenv -> npm install ...
 
+Instalar para desenvolvimento: nodemon -> npm install --save-dev ... ou npm install -D ...
 
-rodar projeto: npm run swagger
+Para subir o projeto, deletar a pasta "node_modules" ou fazer um arquivo .gitignore. Para reinstalar, digitar o comando npm install ou npm i
+
+-- Desenvolvimento
+
+Criar arquivo index.js
+
+Criar arquivo conn.js na pasta db
+
+Criar um arquivo na pasta Models
+
+Criar um arquivo na pasta Controllers
+
+Criar um arquivo na pasta Routes. Caso existir mais que um Controller. É possível colocar todas as rotas em um único arquivo ou criar arquivos separados.
+Recomendado criar um para cada
+Importar Routes para o index.js e ligar o express com as rotas
+
+Instalação do Swagger:
+npm install swagger-ui-express
+npm install -D swagger-autogen
+
+Alterar a parte "scripts" no package.json para incluir o swagger
+
+Criar arquivo na raiz da pasta Backend chamado "swagger.js"
+
+Para rodar o projeto:
+npm run swagger
+
+Alterar o index inserindo o Swagger
+
+Para subir o Backend:
+npm start
+
+-- Frontend
+
+Gerar Frontend:
+Na pasta raiz do projeto(ToDo) executar comando: npm create vite@latest Frontend
+
+Processo para geração:
+◇  Package name:
+│  frontend
+│
+◇  Select a framework:
+│  React
+│
+◇  Select a variant:
+│  JavaScript
+│
+◇  Which linter to use?
+│  ESLint
+│
+◇  Install with npm and start now?
+│  Yes
+
+Como o React roda na porta 5173, alterar no index a porta 3000 para a porta do React
+
+Gerar Tailwindcss:
+Na pasta Frontend, executar comando: npm install tailwindcss @tailwindcss/vite
+
+Instalar para o Frontend:
+react-router-dom e axios
+
+npm install react-router-dom axios
+
+Baixar arquivos disponíveis no Classroom:
+Criar pastas Pages e Components no Frontend/src
+Salvar TodoItem em Components
+Salvar TodoForm e TodoList em Pages
+Substituir App.jsx
+Salvar logo-todo.png em assets
+
+Apagar app.css
+
+Apagar código do index.css e importar tailwind: @import "tailwindcss"
+
+Alterar vite.config.js:
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite';
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react(),tailwindcss()],
+})
+
+Apagar imagens da pasta public e de assets, deixando apenas logo-todo.png
+
+Alterar index.html
+
+Alterar main.jsx
+
+Alterar a porta do Backend no index.js para 5173(Igual ao Frontend)
+
+Dentro de src, criar a pasta "api"
+Criar um arquivo Todo.jsx
+
+Alterar TodoForm.jsx

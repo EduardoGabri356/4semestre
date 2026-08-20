@@ -1,7 +1,6 @@
-import react,{ useState } from "react";
+import react, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Create } from "../API/ToDo.jsx"
-import { create } from "axios";
+import { create } from "../API/ToDo.jsx"
 
 export default function TodoForm() {
     const[titulo,setTitulo] = useState('');
@@ -9,7 +8,7 @@ export default function TodoForm() {
     const[dataLimite,setDataLimite] = useState('');
     const[situacao,setSituacao] = useState('Pendente');
     const[saving,setSaving] = useState(false);
-    const navigate = useNavigate;
+    const navigate = useNavigate();
     const handleSubmit = async(e)=>{
         e.preventDefault();
         setSaving(true);
