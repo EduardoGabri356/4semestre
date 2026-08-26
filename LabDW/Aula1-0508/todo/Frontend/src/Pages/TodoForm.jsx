@@ -14,7 +14,7 @@ export default function TodoForm() {
         setSaving(true);
         try{
             await create(titulo, descricao, dataLimite, situacao)
-            // navigate("/")
+            navigate("/")
         } catch(error) {
             alert("deu bomba ai tentando criar a tarefa" + (error.message || error))
         } finally {

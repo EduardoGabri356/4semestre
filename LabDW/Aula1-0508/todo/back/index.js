@@ -1,15 +1,18 @@
 import express from "express";
 import cors from "cors";
+import swaggerUI from "swagger-ui-express";
 import routes from "./Routes/routes.js";
-// incluir as rotas
-const app = new express();
-// comunicação entre front e back, usar json
+import swaggerDocument from "./swagger-output.json" with { type: "json" };
+
+const app = express();
+
 app.use(express.json());
 app.use(cors({
-    Credential: true,
+    credentials: true,
     origin: "http://localhost:5173"
-}))
-// ligar express com as rotas
-app.use("/docs", swaggerUI.serve, saggerUI.setup(swaggerDocument));
+}));
+
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use("/todo", routes);
-app.listen(5000);
+
+app.listen(5000, () => console.log("Servidor rodando na porta 5000"));

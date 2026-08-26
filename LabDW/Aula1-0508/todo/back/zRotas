@@ -102,3 +102,14 @@ Dentro de src, criar a pasta "api"
 Criar um arquivo Todo.jsx
 
 Alterar TodoForm.jsx
+
+Alterar toDoList.jsx
+
+Remover o comentário do import 
+
+instalar:
+  - argon2 (criptografar senha)
+  - cookier-parser (guardar token cookies)
+  - jsonwebtoken (geração de token)
+  - dotenv (trabalhar .env)
+  - nodemailer (envio de email)

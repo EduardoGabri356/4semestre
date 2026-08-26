@@ -7,5 +7,6 @@ const API = axios.create({
 })
 
 export const getToDo=()=>API.get("/getAll")
-export const create=()=>API.post("/create")
+export const create = (titulo, descricao, dataLimite, situacao) =>
+    API.post("/create", { titulo, descricao, dataLimite, situacao });
 export default API;

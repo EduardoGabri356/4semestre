@@ -1,10 +1,9 @@
-import { Routes } from "express";
-import tarefaController from "../controllers/TarefaController";
+import { Router } from "express";
+import TarefaController from "../controllers/TarefaController.js";
 
-// Instancia um novo objeto do módulo de rotas
-const routes = new Routes();
+const routes = Router();
 
-routes.post("/create/", TarefaController.create);
-routes.post("/getAll/", TarefaController.getAll);
+routes.post("/create", TarefaController.Create);
+routes.get("/getAll", TarefaController.GetAll);
 
 export default routes;

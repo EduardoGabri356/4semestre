@@ -1,25 +1,26 @@
-// aqui nós estamos criando a model de uma tarefa no nosso To-Do
-import { Schema } from "mongoose";
 import mongoose from "../db/conn.js";
 const { Schema } = mongoose;
+
 const tarefaSchema = new Schema({
-        titulo:{
+        titulo: {
             type: String,
-            require: true,
+            required: true,
         },
-        descricao:({
+        descricao: {
             type: String,
-            require: true,
-        }),
-        dataLimite:({
+            required: true,
+        },
+        dataLimite: {
             type: Date,
             required: true,
-        }),
-        situacao:({
+        },
+        situacao: {
             type: String,
             required: true,
-        })
-    },{timestamp: true}
+        }
+    },
+    { timestamps: true }
 );
+
 const Tarefa = mongoose.model('Task', tarefaSchema);
-export default Tarefa
+export default Tarefa;
