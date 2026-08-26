@@ -7,9 +7,13 @@ const doc = {
     host: 'localhost:5000',
     basePatch: '/ToDo',
 }
-// 
-const outputfile = './swagger-output.json' 
-const routefile = ['./Routes/routes.js']
+// nome do arquivo que sera criado automaticamente
+const outputfile = './swagger-output.json'; 
 
 // caminho para as rotas
-swaggerAutogen()( outputfile, routefile, doc )
+const endPointFiles = [
+    './Routes/routesUsuario.js',
+    './Routes/routesTarefa.js'
+];
+
+swaggerAutogen()( outputfile, endPointFiles, doc )

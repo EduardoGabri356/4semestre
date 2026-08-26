@@ -1,7 +1,11 @@
+// imports de Rotas
+import routesTarefa from "./Routes/routesTarefa.js";
+import routesUsuario from "./Routes/routesUsuario.js";
+
+// node modules
 import express from "express";
 import cors from "cors";
 import swaggerUI from "swagger-ui-express";
-import routes from "./Routes/routes.js";
 import swaggerDocument from "./swagger-output.json" with { type: "json" };
 
 const app = express();
@@ -13,6 +17,7 @@ app.use(cors({
 }));
 
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-app.use("/todo", routes);
+app.use("/todo", routesTarefa);
+app.use("/todo", routesUsuario);
 
 app.listen(5000, () => console.log("Servidor rodando na porta 5000"));
