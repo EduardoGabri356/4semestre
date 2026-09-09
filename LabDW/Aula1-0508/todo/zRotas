@@ -113,3 +113,6 @@ instalar:
   - jsonwebtoken (geração de token)
   - dotenv (trabalhar .env)
   - nodemailer (envio de email)
+
+instalar socket.io no backend
+intalar socket.io-client no frontend

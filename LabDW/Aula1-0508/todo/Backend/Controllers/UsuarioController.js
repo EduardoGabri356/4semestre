@@ -216,5 +216,5 @@ export default class UsuarioController
         return res.status(500).json({ message: "Erro ao buscar usuário", error: error.message });
     }
     }
-    
+        
 };

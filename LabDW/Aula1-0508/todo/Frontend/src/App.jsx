@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import TodoList from "./Pages/TodoList";
 import Login from "./Pages/Login";
+import Cadastro from "./Pages/Cadastro";
+import ForgotPassword from "./Pages/ForgotPassword";
+import ResetPassword from "./Pages/ResetPassword";
 import TodoForm from "./Pages/TodoForm";
 import logoTodo from "./assets/logo-todo.png";
 import { logout, getProfile } from "./api/Todo.jsx";
@@ -69,12 +72,20 @@ export default function App() {
                 Sair
               </button>
             ) : (
-              <Link
-                to="/login"
-                className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-              >
-                Entrar
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  to="/register"
+                  className="px-5 py-2 border border-gray-300 text-gray-700 hover:bg-gray-100 font-medium rounded-lg transition-colors"
+                >
+                  Criar conta
+                </Link>
+                <Link
+                  to="/login"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                >
+                  Entrar
+                </Link>
+              </div>
             )}
           </div>
         </nav>
@@ -88,6 +99,9 @@ export default function App() {
             path="/login"
             element={<Login onLoginSuccess={() => setIsAuthenticated(true)} />}
           />
+          <Route path="/register" element={<Cadastro />} />
+          <Route path="/forgot" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </main>
     </div>

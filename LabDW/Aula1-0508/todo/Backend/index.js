@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import routesTarefa from "./Routes/routesTarefa.js";
 import routesUsuario from "./Routes/routesUsuario.js";
+import routesChat from "./Routes/routesChat.js";
 import swaggerUi from "swagger-ui-express";
 import { createRequire } from "module";
 import cookieParser from "cookie-parser";
@@ -20,8 +21,26 @@ app.use(cors({
     origin: FRONTEND_URL
 }));
 app.use(cookieParser());
+
+//criar servidor Http
+const httpServer = createServer(app);
+//iniciar o websocket
+io = new Server(httpServer,{
+    cors: {
+        origin: FRONTEND_URL,
+        credentials: true,
+    }
+});
+io.on("connect", (socket) =>{
+    console.log(`Usuario Conectado: ${socket.id}`);
+    resgisterChatSocket(io, socket);
+    socket.on("disco")
+})
 //obrigatoriamente o swagger deve vir antes das rotas
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/ToDo", routesTarefa);
 app.use("/ToDo", routesUsuario);
-app.listen(PORT);
+app.use("ToDo", routesChat);
+httpServer.listen(PORT, () =>{
+    `servidor rodando na porta ${PORT}`
+})
