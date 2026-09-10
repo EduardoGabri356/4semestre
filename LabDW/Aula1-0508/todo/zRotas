@@ -103,16 +103,43 @@ Criar um arquivo Todo.jsx
 
 Alterar TodoForm.jsx
 
-Alterar toDoList.jsx
+Alterar TodoList.jsx
 
-Remover o comentário do import 
+Remova os comentários referentes a TodoList no arquivo App.jsx
 
-instalar:
-  - argon2 (criptografar senha)
-  - cookier-parser (guardar token cookies)
-  - jsonwebtoken (geração de token)
-  - dotenv (trabalhar .env)
-  - nodemailer (envio de email)
+-- Backend
 
-instalar socket.io no backend
-intalar socket.io-client no frontend
+Instalar:
+argon2 (caso não conseguir: npm i @node-rs/argon2)
+cookie-parser
+jsonwebtoken
+dotenv
+nodemailer
+
+npm i argon2 cookie-parser jsonwebtoken dotenv nodemailer
+
+Criar Model Usuario.js
+
+Criar Controller UsuarioController.js
+
+Alterar nome do arquivo routes.js para routesTarefa.js
+Editar arquivo
+
+Criar rota para usuario routesUsuario.js
+
+Alterar index.js
+
+Alterar swagger.js
+
+rodar no terminal no Backend "node swagger"
+
+Pegar arquivos prontos do Classroom:
+Pages - TodoList, TodoForm e Login
+App.jsx
+.env (Na raiz da Pasta Backend)
+
+Inserindo Sistema de Login no UsuarioController
+
+Editar index.js
+
+Caso não aparecer o Método de Login, rode o comando "npm run swagger" na pasta Backend
