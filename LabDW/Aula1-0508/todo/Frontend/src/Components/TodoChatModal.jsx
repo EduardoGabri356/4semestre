@@ -1,69 +1,73 @@
-import React, {useState, useEffect, useRef} from "react"
+import React, {useState, useEffect, useRef} from "react";
 import {io} from "socket.io-client";
-import {getChatTodoHistory} from "../API/Todo"
-
-// conecta a URL do backend
-const SOCKET_URL = "https://localhost:5000";
-export default function TodoChatModal({tarefa, usuarioLogado, onClose}){
-const[mensagens, setMensasgens] = useState([]);
-const [novoTexto, setNovoTexto] = useState("");
-const [loading, setLoading] = (true);
-const socketRef = useRef(null);
-const messagesEndRef = useRef(null);
-
-const scrollToBottom = () => {
-  messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-};
-
-// carregar histórico ao abrir o chat da tarefa
-useEffect(() => {
-  async function carregarHistorico() {
-    try {
-      setLoading(true);
-      const resposta = await getChatTodoHistory(tarefa._id);
-      setMensagens(resposta.data.mensagens || []);
-    } catch (error) {
-      console.log("erro ao carregar o histórico de mensagens");
-    } finally {
-      setLoading(false);
-    }
-  }
-  carregarHistorico();
-}, [tarefa._id]);
-
-// inicializar o socket, entrar na sala da tarefa e ouvir mensagens
-useEffect(() => {
-  socketRef.current = io(SOCKET_URL, { withCredentials: true });
-  socketRef.current.emit("join_task", tarefa._id);
-
-  socketRef.current.on("receive_message", (mensagemRecebida) => {
-    setMensagens((prev) => [...prev, mensagemRecebida]);
-  });
-
-  return () => {
-    if (socketRef.current) {
-      socketRef.current.emit("leave_task", tarefa._id);
-      socketRef.current.disconnect();
-    }
+import {getChatTodoHistory} from "../api/Todo.jsx";
+//conecta a URL do backend 
+const SOCKET_URL = "http://localhost:5000";
+export default function TodoChatModal({tarefa, usuarioLogado, onClose})
+{
+  const[mensagens, setMensagens] = useState([]);
+  const [novoTexto, setNovoTexto] = useState("");
+  const [loading, setLoading] = useState(true);
+  const socketRef = useRef(null);
+  const messagesEndRef = useRef(null);
+  //autoscroll para mostrar as mensagem
+  const scrollToBottom = ()=>{
+    messagesEndRef.current?.scrollIntoView({behavior: "smooth"});
   };
-}, [tarefa._id]);
 
-useEffect(() => {
-  scrollToBottom();
-}, [mensagens]);
-
-const handleEnviar = (e) => {
-  e.preventDefault();
-  if (!novoTexto.trim()) {
-    return;
-  }
-  socketRef.current.emit("send_message", {
-    tarefaId: tarefa._id,
-    remetente: usuarioLogado._id || usuarioLogado.id,
-    texto: novoTexto
+  useEffect(()=>{
+    //carregar o histórico das mensagens trocadas anteriormente (backend)
+    async function carregarHistorico(){
+      try {
+        setLoading(true);
+        const res = await getChatTodoHistory(tarefa._id);
+        setMensagens(res.data.mensagens || []);
+      } catch (error) {
+        console.log("Erro ao carregar o histórico das mensagens", error);
+      }
+      finally{
+        setLoading(false);
+      }
+    }
+  
+  carregarHistorico();
+  //inicializar o socket
+  socketRef.current = io(SOCKET_URL, {
+    withCredentials:true,
   });
-  setNovoTexto("");
-};
+  //entrar no chat
+  socketRef.current.emit("join_task", tarefa._id);
+  //ouvir as mensagens em tempo real
+  socketRef.current.on("receive_message", (mensagemRecebida)=>{
+    setMensagens((prev)=>[... prev, mensagemRecebida]);
+  });
+  //limpar e fechar o modal
+    return () => {
+        if (socketRef.current)
+        {
+          socketRef.current.emit("leave_task", tarefa._id);
+          socketRef.current.disconnect();
+        }
+    }
+  }, [tarefa._id]);
+
+  useEffect(()=>{
+    scrollToBottom();
+  }, [mensagens]);
+
+  const handleEnviar = (e)=>{
+    e.preventDefault();
+    if(!novoTexto.trim()){
+      return;
+    }
+    //emitir mensagem preenchida
+    socketRef.current.emit("send_message", {
+      tarefaId: tarefa._id,
+      remetenteId: usuarioLogado._id || usuarioLogado.id,
+      texto: novoTexto,
+    });
+    setNovoTexto("");
+  };
 
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 z-50">
