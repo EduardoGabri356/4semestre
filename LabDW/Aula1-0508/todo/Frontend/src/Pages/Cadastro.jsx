@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { createUser } from "../api/Todo.jsx";
+import { createUser } from "../API/Todo.jsx";
 
 export default function Cadastro() {
   const [nome, setNome] = useState("");

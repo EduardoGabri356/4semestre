@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { login } from "../api/Todo.jsx";
+import { Link } from "react-router-dom";
+import { login } from "../API/Todo.jsx";
 
 export default function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,10 +14,8 @@ export default function Login({ onLoginSuccess }) {
       await login({ email, senha });
 
       if (onLoginSuccess) {
-        onLoginSuccess();
+        await onLoginSuccess();
       }
-
-      navigate("/");
     } catch (error) {
       alert("Erro ao efetuar login: " + (error.response?.data?.message || error.message || error));
     } finally {

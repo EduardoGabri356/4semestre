@@ -78,8 +78,7 @@ export default class UsuarioController
                 id: usuario._id,
                 nome: usuario.nome,
                 email: usuario.email
-            },
-            token
+            }
         });
     } catch (error) {
         console.error("Erro no login:", error);
@@ -92,7 +91,7 @@ export default class UsuarioController
         const {email} = req.body;
         if(!email)
         {
-            return res.status(402).json({message:"e-mail requerido"});
+            return res.status(422).json({message:"e-mail requerido"});
         }
         try
         {
@@ -109,10 +108,10 @@ export default class UsuarioController
                 resetToken: hashToken,
                 resetTokenExpiry: resetTokenExpiry
             });
-            /*sendPasswordResetEmail(usuario.email, resetToken).catch(err=>{
-                console.error("Falha no envio do e-mail");
-            });*/
-            return res.status(200).json({ message: "Se o e-mail estiver cadastrado, um link será enviado1", resetToken });
+            sendPasswordResetEmail(usuario.email, resetToken).catch(err=>{
+                console.error("Falha no envio do e-mail:", err);
+            });
+            return res.status(200).json({ message: "Se o e-mail estiver cadastrado, um link será enviado" });
         } 
         catch (error)
         {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getTodos } from "../api/Todo.jsx";
+import { getTodos } from "../API/Todo.jsx";
 import TodoItem from "../Components/TodoItem.jsx";
 import { Link } from "react-router-dom";
 

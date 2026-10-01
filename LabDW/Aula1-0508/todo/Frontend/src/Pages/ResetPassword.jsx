@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { reset } from "../api/Todo.jsx";
+import { reset } from "../API/Todo.jsx";
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();

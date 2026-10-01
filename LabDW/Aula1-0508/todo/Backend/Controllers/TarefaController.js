@@ -21,7 +21,7 @@ export default class TarefaController{
             });
             const novaTarefa = await tarefa.save();
             const tarefaPopulada = await Tarefa.findById(
-                novaTarefa._Id)
+                novaTarefa._id)
                 .populate("criadoPor", "nome email")
                 .populate("participam", "nome email");
             res.status(200).json({message:"Tarefa inserida com sucesso", novaTarefa:tarefaPopulada});

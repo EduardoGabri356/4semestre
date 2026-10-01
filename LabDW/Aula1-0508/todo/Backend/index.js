@@ -51,5 +51,5 @@ app.use("/ToDo", routesTarefa);
 app.use("/ToDo", routesUsuario);
 app.use("/ToDo", routesChat);
 httpServer.listen(PORT, ()=>{
-    `Servidor rodando na porta ${PORT}`;
+    console.log(`Servidor rodando na porta ${PORT}`);
 });

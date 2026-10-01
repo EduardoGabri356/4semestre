@@ -4,8 +4,11 @@ import LandingPage from "./Pages/LandingPage";
 import TodoList from "./Pages/TodoList";
 import Login from "./Pages/Login";
 import TodoForm from "./Pages/TodoForm";
+import Cadastro from "./Pages/Cadastro";
+import ForgotPassword from "./Pages/ForgotPassword";
+import ResetPassword from "./Pages/ResetPassword";
 import logoTodo from "./assets/logo-todo.png";
-import { logout, getProfile } from "./api/Todo.jsx";
+import { logout, getProfile } from "./API/Todo.jsx";
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -119,14 +122,27 @@ export default function App() {
                       <Navigate to="/todos" replace />
                     ) : (
                       <Login
-                        onLoginSuccess={() => {
-                          checkUserSession(); // 🟢 Recarrega a sessão ao logar com sucesso
+                        onLoginSuccess={async () => {
+                          await checkUserSession(); // recarrega a sessão antes de navegar
                           navigate("/todos");
                         }}
                       />
                     )
                   }
                 />
+                <Route
+                  path="register"
+                  element={
+                    isAuthenticated ? <Navigate to="/todos" replace /> : <Cadastro />
+                  }
+                />
+                <Route
+                  path="forgot"
+                  element={
+                    isAuthenticated ? <Navigate to="/todos" replace /> : <ForgotPassword />
+                  }
+                />
+                <Route path="reset-password" element={<ResetPassword />} />
               </Routes>
             </main>
           </div>

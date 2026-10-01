@@ -13,6 +13,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "apexcharts": "^7.6.1",
     "argon2": "^0.45.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
@@ -22,6 +23,7 @@
     "mongoose": "^9.9.1",
     "nodemailer": "^9.1.1",
     "nodemon": "^3.1.14",
+    "react-apexcharts": "^2.1.1",
     "socket.io": "^4.8.3",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1"

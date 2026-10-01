@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from "react";
 import {io} from "socket.io-client";
-import {getChatTodoHistory} from "../api/Todo.jsx";
+import {getChatTodoHistory} from "../API/Todo.jsx";
 //conecta a URL do backend 
 const SOCKET_URL = "http://localhost:5000";
 export default function TodoChatModal({tarefa, usuarioLogado, onClose})

@@ -1,26 +1,19 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { forgot } from "../api/Todo.jsx";
+import { forgot } from "../API/Todo.jsx";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [mensagem, setMensagem] = useState("");
-  const [resetToken, setResetToken] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMensagem("");
-    setResetToken("");
     try {
       const resposta = await forgot({ email });
       setMensagem(resposta.data.message);
-      // O envio de e-mail ainda não está ativo no back-end, então o token
-      // vem direto na resposta para permitir testar o fluxo completo.
-      if (resposta.data.resetToken) {
-        setResetToken(resposta.data.resetToken);
-      }
     } catch (error) {
       alert("Erro ao solicitar recuperação: " + (error.response?.data?.message || error.message || error));
     } finally {
@@ -60,15 +53,6 @@ export default function ForgotPassword() {
           <p className="text-sm text-gray-700 bg-gray-50 border border-gray-200 rounded-lg px-4 py-3">
             {mensagem}
           </p>
-
-          {resetToken && (
-            <Link
-              to={`/reset-password?token=${resetToken}`}
-              className="block w-full text-center py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
-            >
-              Redefinir senha agora
-            </Link>
-          )}
         </div>
       )}
 

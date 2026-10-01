@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { createTodo } from "../api/Todo.jsx";
-import { getUsers } from "../api/Todo.jsx"; // ou seu arquivo de API
+import { createTodo } from "../API/Todo.jsx";
+import { getUsers } from "../API/Todo.jsx"; // ou seu arquivo de API
 import {useVoiceRecognition} from "../Hooks/useVoiceRecognition.js";
 export default function TodoForm() {
   const [titulo, setTitulo] = useState("");
