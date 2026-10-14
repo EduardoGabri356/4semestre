@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getTodos } from "../API/Todo.jsx";
 import TodoItem from "../Components/TodoItem.jsx";
+import GraficoSituacao from "../Components/GraficoSituacao.jsx";
 import { Link } from "react-router-dom";
 
-//Recebe usuarioLogado nas props do componente
-export default function TodoList({ usuarioLogado }) { 
+export default function TodoList({ usuarioLogado }) {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,6 +25,13 @@ export default function TodoList({ usuarioLogado }) {
   useEffect(() => {
     fetchTodos();
   }, []);
+
+  // troca a tarefa alterada na lista, sem precisar recarregar tudo
+  const handleUpdate = (tarefaAtualizada) => {
+    setTodos((prev) =>
+      prev.map((t) => (t._id === tarefaAtualizada._id ? tarefaAtualizada : t))
+    );
+  };
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-6 md:p-8">
@@ -55,6 +62,9 @@ export default function TodoList({ usuarioLogado }) {
         </div>
       )}
 
+      {/* Gráfico: quantidade de tarefas por situação */}
+      {!loading && !error && <GraficoSituacao todos={todos} />}
+
       {/* Lista de Tarefas */}
       {!loading && !error && (
         <div className="space-y-3">
@@ -64,11 +74,7 @@ export default function TodoList({ usuarioLogado }) {
             </p>
           ) : (
             todos?.map((todo) => (
-              <TodoItem
-                key={todo._id || todo.id}
-                todo={todo}
-                usuarioLogado={usuarioLogado}
-              />
+              <TodoItem key={todo._id || todo.id} todo={todo} usuarioLogado={usuarioLogado} onUpdate={handleUpdate} />
             ))
           )}
         </div>

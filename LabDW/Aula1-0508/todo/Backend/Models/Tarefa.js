@@ -13,19 +13,15 @@ const tarefaSchema = new Schema({
         type:Date,
         required:true,
     },
-    situacao:{
-        type:String,
-        required:true,
-    },
-    criadoPor:{
-        type: Schema.Types.ObjectId,
-        ref: "Usuario",
-        required: true,
-    },
     participam:[{
         type: Schema.Types.ObjectId,
-        ref:"Usuario"
-    }]
+        ref: "Usuario",
+    }],
+    situacao:{
+        type:String,
+        enum: ["Pendente", "Finalizada", "Cancelada"],
+        default: "Pendente",
+    }
 },{timestamps:true});
 const Tarefa = mongoose.model('Tarefa', tarefaSchema);
 export default Tarefa;

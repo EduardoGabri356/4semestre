@@ -1,131 +1,87 @@
 import React, { useState } from "react";
 import TodoChatModal from "./TodoChatModal.jsx";
+import { updateSituacao } from "../API/Todo.jsx";
 
-export default function TodoItem({ todo, usuarioLogado }) {
-  const [isChatOpen, setIsChatOpen] = useState(false);
+const estiloSituacao = {
+    Pendente: "bg-yellow-50 text-yellow-700 border-yellow-200",
+    Finalizada: "bg-green-50 text-green-700 border-green-200",
+    Cancelada: "bg-red-50 text-red-700 border-red-200",
+};
 
-  // Extrai as iniciais do nome (ex: "Carlos Silva" -> "CS")
-  const getInitials = (nome) => {
-    if (!nome) return "?";
-    const parts = nome.trim().split(" ");
-    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-  };
+export default function TodoItem({ todo, usuarioLogado, onUpdate }) {
+    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [saving, setSaving] = useState(false);
 
-  const criador = todo.criadoPor;
-  const participantes = todo.participam || [];
+    const mudarSituacao = async (novaSituacao) => {
+        if (novaSituacao === "Cancelada" && !window.confirm("Deseja realmente cancelar esta tarefa?")) {
+            return;
+        }
+        setSaving(true);
+        try {
+            const resposta = await updateSituacao(todo._id, novaSituacao);
+            onUpdate?.(resposta.data.tarefa);
+        } catch (error) {
+            alert("Erro ao atualizar a tarefa: " + (error.response?.data?.message || error.message || error));
+        } finally {
+            setSaving(false);
+        }
+    };
 
-  // Limite de participantes visíveis na pilha
-  const maxVisible = 3;
-  const visibleParticipantes = participantes.slice(0, maxVisible);
-  const extraCount = participantes.length - maxVisible;
-
-  // Lista com todos os nomes para tooltip
-  const todosNomesParticipantes = participantes.map((p) => p.nome).join(", ");
-
-  return (
-    <>
-      <div className="flex flex-col gap-3 p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow bg-white">
-        {/* Linha Superior: Título + Badge de Situação */}
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <h3 className="font-semibold text-gray-800 text-lg leading-tight">
-              {todo.titulo}
-            </h3>
-            <p className="text-sm text-gray-600 mt-1">{todo.descricao}</p>
-          </div>
-
-          <span
-            className={`px-2.5 py-1 text-xs font-semibold rounded-full shrink-0 ${
-              todo.situacao === "CONCLUIDA"
-                ? "bg-green-100 text-green-700"
-                : todo.situacao === "EM_ANDAMENTO"
-                ? "bg-yellow-100 text-yellow-800"
-                : "bg-gray-100 text-gray-700"
-            }`}
-          >
-            {todo.situacao}
-          </span>
-        </div>
-
-        {/* Rodapé do Card: Infos + Equipe + Botão de Chat */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-gray-100 text-xs text-gray-500">
-          <div className="flex items-center gap-4">
-            <div>
-              <span className="font-medium text-gray-700">Prazo:</span>{" "}
-              {todo.dataLimite
-                ? new Date(todo.dataLimite).toLocaleDateString("pt-BR")
-                : "Sem data"}
-            </div>
-            {criador && (
-              <div>
-                <span className="font-medium text-gray-700">Criado por:</span>{" "}
-                <span className="text-gray-900 font-medium">
-                  {criador.nome}
-                </span>
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center gap-3">
-            {/* Participantes da tarefa */}
-            {participantes.length > 0 && (
-              <div
-                className="flex items-center gap-2"
-                title={`Participantes: ${todosNomesParticipantes}`}
-              >
-                <span className="font-medium text-gray-700 hidden sm:inline">
-                  Equipe:
-                </span>
-
-                <div className="flex -space-x-2 overflow-hidden">
-                  {visibleParticipantes.map((participante, index) => (
-                    <div
-                      key={participante._id || index}
-                      className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-500 text-white font-semibold border-2 border-white shadow-xs text-[10px]"
-                      title={participante.nome}
-                    >
-                      {getInitials(participante.nome)}
+    return (
+        <>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 border rounded hover:shadow-sm">
+                <div>
+                    <div className="font-medium">{todo.titulo}</div>
+                    <div className="text-sm text-gray-600">{todo.descricao}</div>
+                    <div className="text-sm">Data Limite: {new Date(todo.dataLimite).toLocaleDateString()}</div>
+                    <div className="text-sm mt-1">
+                        Situação:{" "}
+                        <span className={`px-2 py-0.5 text-xs font-semibold border rounded-full ${estiloSituacao[todo.situacao] || "bg-gray-50 text-gray-700 border-gray-200"}`}>
+                            {todo.situacao}
+                        </span>
                     </div>
-                  ))}
-
-                  {extraCount > 0 && (
-                    <div
-                      className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gray-200 text-gray-700 font-bold border-2 border-white shadow-xs text-[10px]"
-                      title={`Mais ${extraCount} participantes: ${participantes
-                        .slice(maxVisible)
-                        .map((p) => p.nome)
-                        .join(", ")}`}
-                    >
-                      +{extraCount}
-                    </div>
-                  )}
                 </div>
-              </div>
+
+                <div className="flex items-center gap-2">
+                    {todo.situacao === "Pendente" && (
+                        <>
+                            <button
+                                onClick={() => mudarSituacao("Finalizada")}
+                                disabled={saving}
+                                className="px-3 py-1.5 text-xs font-semibold text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Finalizar
+                            </button>
+                            <button
+                                onClick={() => mudarSituacao("Cancelada")}
+                                disabled={saving}
+                                className="px-3 py-1.5 text-xs font-semibold text-red-600 border border-red-200 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Cancelar
+                            </button>
+                        </>
+                    )}
+
+                    {/* Botão para abrir o modal de Chat */}
+                    <button
+                        onClick={() => setIsChatOpen(true)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors cursor-pointer"
+                        title="Abrir chat da tarefa"
+                    >
+                        <span>💬</span>
+                        <span>Chat</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Modal do Chat acionado pelo estado */}
+            {isChatOpen && (
+                <TodoChatModal
+                    tarefa={todo}
+                    usuarioLogado={usuarioLogado}
+                    onClose={() => setIsChatOpen(false)}
+                />
             )}
-
-            {/*Botão para abrir o modal de Chat */}
-            <button
-              onClick={() => setIsChatOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors cursor-pointer ml-auto"
-              title="Abrir chat da tarefa"
-            >
-              <span>💬</span>
-              <span>Chat</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Modal do Chat acionado pelo estado */}
-      {isChatOpen && (
-        <TodoChatModal
-          tarefa={todo}
-          usuarioLogado={usuarioLogado}
-          onClose={() => setIsChatOpen(false)}
-        />
-      )}
-    </>
-    
-  );
+        </>
+    );
 }
