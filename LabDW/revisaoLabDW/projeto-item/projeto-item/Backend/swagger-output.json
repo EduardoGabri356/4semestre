@@ -1,0 +1,10 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API do Projeto",
+    "description": "Documentação gerada automaticamente"
+  },
+  "host": "localhost:5000",
+  "basePath": "/App",
+  "paths": {}
+}

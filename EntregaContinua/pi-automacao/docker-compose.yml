@@ -1,0 +1,24 @@
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "8080:3000"
+    environment:
+      - MONGO_URI=mongodb://admin:senha123@db:27017/prontaComanda?authSource=admin
+    depends_on:
+      - db
+
+  db:
+    image: mongo:6
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: DevEduardo
+      MONGO_INITDB_ROOT_PASSWORD: segredo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./init.js:/docker-entrypoint-initdb.d/init.js
+
+volumes:
+  mongo-data:
